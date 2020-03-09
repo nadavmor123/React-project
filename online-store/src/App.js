@@ -1,16 +1,24 @@
 import React from "react";
 import HomePage from "./pages/homepage/homepage.component";
 import ShopPage from "./pages/shop/shop.component";
-import { Route, Link } from "react-router-dom";
+import SignIn from "./pages/signin/signin.component";
+import { Route } from "react-router-dom";
 import "./App.css";
+import NavBar from "./components/navbar/navbar.component";
+import { GlobalProvider } from './state/GlobalState';
 
 function App() {
   return (
-git commit -am ""
-    <div className="app-container">
-      <Route exact path="/" component={HomePage} />
-      <Route exact path="/shop" component={ShopPage} />
-    </div>
+      <div className="app-container">
+          <GlobalProvider>
+              <NavBar/>
+              <Route exact path="/shop" component={ShopPage} />
+          </GlobalProvider>
+          <Route exact path="/" component={SignIn} />
+          <Route exact path="/home" component={HomePage} />
+      </div>
+
+
   );
 }
 
