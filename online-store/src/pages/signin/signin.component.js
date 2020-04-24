@@ -1,37 +1,55 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
-import { auth, signOut, signInWithGoogle } from '../../Firebase/firebase.util';
-import { GlobalContext } from "../../state/GlobalState";
-import './signin.styles.scss';
-
+import { auth, signOut, signInWithGoogle } from "../../Firebase/firebase.util";
+import { GlobalState } from "../../state/GlobalState";
+import "./signin.styles.scss";
 
 const SignIn = () => {
+  const history = useHistory();
+  const { setUser, addToCart } = useContext(GlobalState);
 
-	const history = useHistory();
-	const { setUser } = useContext(GlobalContext);
+  function logOut() {
+    signOut();
+    localStorage.removeItem("user");
+  }
 
-	useEffect(() => {
-		auth.onAuthStateChanged( user => {
-			if(user){
-				localStorage.setItem('user', JSON.stringify(user));
-				history.push('/home');
-			}else{
-				localStorage.removeItem('user');
-				history.push('/');
-			}
-		});
-	},[]);
+  useEffect(() => {
+    let storage_user;
+    auth.onAuthStateChanged(user => {
+      if (!user) {
+        setUser(null);
+      } else {
+        setUser(user);
+      }
+    });
+  }, []);
 
-	return (
-		<div>
-			<h1>Please signin with google :)</h1>
-			<button onClick={() => {
-				signInWithGoogle().then(userCredentials => setUser(userCredentials.user))
-			}}>Login</button>
-			<button onClick={signOut}>LogOut</button>
-		</div>
-
-	);
-}
+  return (
+    <div>
+      <h1>Please signin with google :)</h1>
+      <button
+        onClick={() => {
+          signInWithGoogle();
+        }}
+      >
+        Login
+      </button>
+      <button
+        onClick={() => {
+          logOut();
+        }}
+      >
+        LogOut
+      </button>
+      <button
+        onClick={() => {
+          addToCart({ test: "test" });
+        }}
+      >
+        test
+      </button>
+    </div>
+  );
+};
 
 export default SignIn;
