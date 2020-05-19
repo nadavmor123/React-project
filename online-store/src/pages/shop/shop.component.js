@@ -1,32 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import  CollectionPreview from '../../components/collection-preview/collection-preview.component';
-import './shop.styles.scss';
-import SHOP_DATA from './shop.data';
+import React, { useState, useEffect, useContext } from "react";
+import CollectionPreview from "../../components/collection-preview/collection-preview.component";
+import "./shop.styles.scss";
+import SHOP_DATA from "./shop.data";
+import { GlobalState } from "../../state/GlobalState";
 
 const ShopPage = () => {
+  const { cart } = useContext(GlobalState);
 
-	const [collections, setCollections] = useState([]);
+  const [collections, setCollections] = useState([]);
 
-	useEffect(() => {
-		setCollections(SHOP_DATA);
-	});
+  useEffect(() => {
+    console.log("----shoppage useEffect-----");
+    setCollections(SHOP_DATA);
+  });
 
-	return(
-		<div>
-			<h1>SHOP</h1>
-
-			<div>
-				{
-					collections.map( collection => (
-						<CollectionPreview
-							key={collection.id}
-							title={collection.title}
-							items={collection.items} />
-					))
-				}
-			</div>
-		</div>
-	);
-}
+  return (
+    <div>
+      <h1>SHOP</h1>
+      <div>items in cart: {cart.length}</div>
+      <div>
+        {collections.map(collection => (
+          <CollectionPreview
+            key={collection.id}
+            title={collection.title}
+            items={collection.items}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
 
 export default ShopPage;
